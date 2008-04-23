@@ -5,7 +5,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(goatse);
 
-$VERSION = 0.01;
+$VERSION = 0.02;
 
 sub goatse {
 
@@ -35,9 +35,30 @@ M("`@("`@?"`*("!\("`@("`@("`@('P@("`@("`@("!\("`@('P@("`@("`@
 ,?"`@("`@("`@('P*
 &;
 
-return unpack 'u', $_;
+$_ = unpack 'u', $_;
+
+my $pad = int shift;
+
+if ($pad){
+	my @lines = split /\n/;
+
+	for(1..$pad){
+		my @newlines;
+		for my $line(@lines){
+			push @newlines, pad_line($line);
+			#push @newlines, "\n";
+		}
+		@lines = @newlines;
+	}
+	$_ = join "\n", @lines;
 }
 
+return $_;
+}
+
+sub pad_line {
+	return join '',map{"$_ "}split //, shift;
+}
 
 __END__
 
@@ -51,6 +72,9 @@ Acme::Goatse - On-demand goatse
 
 	$foo = goatse();
 	print $foo;
+
+	# to zoom in...
+	goatse(1);
 
 
 =head1 DESCRIPTION
